@@ -313,6 +313,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
 .more-list{display:flex;flex-direction:column;gap:8px}
 .more-list button{display:flex;gap:12px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:14px;font-weight:600;font-size:1rem}
 .more-list button[aria-selected="true"]{border-color:var(--accent);color:var(--accent)}
+.more-list button svg{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .themebtn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 10px;font-size:.78rem;color:var(--ink-soft)}
 @media (prefers-reduced-motion:no-preference){.card,.btn,.tab,.nav button{transition:background .15s,border-color .15s}}
 </style>
@@ -353,10 +354,11 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
 <div class="overlay" id="overlayMore" role="dialog" aria-modal="true" aria-labelledby="moreTitle">
   <div class="sheet"><h2 id="moreTitle">Menu</h2>
     <div class="more-list" id="moreList">
-      <button type="button" data-sec="dificuldade">Vídeos por nível de dificuldade</button>
-      <button type="button" data-sec="ganchos">Ganchos e Temas</button>
-      <button type="button" data-sec="inspiracao">Datas especiais</button>
-      <button type="button" data-sec="perfil">Meu perfil e aparência</button>
+      <button type="button" data-sec="dificuldade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7"/></svg>Vídeos por nível de dificuldade</button>
+      <button type="button" data-sec="ganchos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Ganchos e Temas</button>
+      <button type="button" data-sec="inspiracao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Datas especiais</button>
+      <button type="button" data-sec="perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Meu perfil e aparência</button>
+      <button type="button" data-sec="lixo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>Lixo</button>
     </div>
   </div>
 </div>
@@ -686,7 +688,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
     ["theme","hook","script","caption","hashtags","recordAt","editAt","publishAt","igUrl","batchId","batchEv","derivedFrom","recLevel","editLevel"].forEach(function(f){ if(typeof it[f]!=="string") it[f]=""; });
     it.duration=it.duration||60; it.editDuration=it.editDuration||90; it.sync=it.sync!==false;
     var ev=it.ev||{}; it.ev={rec:ev.rec||it.eventId||"",edit:ev.edit||"",pub:ev.pub||""};
-    it.metrics=it.metrics||{}; it.chk=Array.isArray(it.chk)?it.chk:[]; it.win=!!it.win; it.archived=false; it.snooze=0;
+    it.metrics=it.metrics||{}; it.chk=Array.isArray(it.chk)?it.chk:[]; it.win=!!it.win; it.archived=false; it.snooze=0; it.trashed=Number(it.trashed)||0;
     return it;
   }
 
@@ -953,7 +955,8 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
   }
 
   /* ---------- dados derivados ---------- */
-  function all(){return arr(items);}
+  function all(){return arr(items).filter(function(x){return !x.trashed;});}
+  function trashList(){return arr(items).filter(function(x){return x.trashed;}).sort(function(a,b){return b.trashed-a.trashed;});}
   function active(){return all().filter(function(x){return !x.archived;});}
   function pubs(){return active().filter(function(x){return x.status==="publicado";});}
   function allMats(){return arr(mats);}
@@ -1044,14 +1047,15 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
   /* ---------- excluir e desfazer ---------- */
   function snap(o){return JSON.parse(JSON.stringify(o));}
   function undoPut(prev){return function(){return putDoc("videos",normalize(prev));};}
-  async function removeVideos(ids){
+  async function removeVideos(ids,hard){
     var snaps=[], failed=false;
     for(var j=0;j<ids.length;j++){
       var it=items[ids[j]]; if(!it) continue;
       snaps.push(snap(it));
       if(mcp){ for(var i=0;i<KINDS.length;i++){ var ev=it.ev&&it.ev[KINDS[i].k]; if(ev){ try{ await cal("delete_event",{eventId:ev}); }catch(err){ failed=true; } } } }
       delete sel[ids[j]]; delete delSel[ids[j]];
-      await delDoc("videos",ids[j]);
+      if(hard) await delDoc("videos",ids[j]);
+      else{ var tr=normalize(it); tr.trashed=Date.now(); tr.ev={rec:"",edit:"",pub:""}; tr.eventId=""; tr.calState=""; await put(tr); }
     }
     if(failed) toast("Excluí, mas algum evento continua na Agenda.");
     return snaps;
@@ -1063,7 +1067,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
       await put(it);
     }
   }
-  function undoCreated(ids){return async function(){ await removeVideos(ids); };}
+  function undoCreated(ids){return async function(){ await removeVideos(ids,true); };}
 
   /* ---------- ações ---------- */
   async function advance(id){
@@ -1142,7 +1146,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
     $("#metBox").open = !!focusMetrics || it.status==="publicado";
     renderEditorMats(); m2Reset();
     renderThemeChips();
-    $("#f_del").textContent="Excluir"; $("#f_del").dataset.armed="";
+    $("#f_del").textContent="Mandar para o Lixo"; $("#f_del").dataset.armed="";
     $("#overlay").classList.add("open"); $("#f_title").focus();
   }
   function setLevels(r,e){ var v={recLevel:r||"",editLevel:e||""}; document.querySelectorAll(".dgrp").forEach(function(g){ g.querySelectorAll(".dbox").forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.level===v[g.dataset.diff])); }); }); }
@@ -1166,10 +1170,10 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
       '<div class="sum next"><b>'+(up?esc(KBYKEY[up.kind].label+": "+up.it.title):"Nada marcado")+'</b><span>'+(up?esc(whenText(up.at)):"Marque datas nos vídeos")+'</span></div>';
   }
   function renderNav(){
-    var extra=["dificuldade","ganchos","inspiracao","perfil"];
+    var extra=["dificuldade","ganchos","inspiracao","perfil","lixo"];
     document.querySelectorAll("#bnav [data-sec]").forEach(function(b){ b.setAttribute("aria-selected",String(b.dataset.sec===sec)); });
     $("#menuBtn").setAttribute("aria-selected",String(extra.indexOf(sec)>=0));
-    var NAMES={videos:"Vídeos",ideias:"Ideias",agenda:"Agenda",metricas:"Métricas",dificuldade:"Por dificuldade",ganchos:"Ganchos e Temas",inspiracao:"Datas especiais",materiais:"Materiais de apoio",perfil:"Meu perfil"};
+    var NAMES={videos:"Vídeos",ideias:"Ideias",agenda:"Agenda",metricas:"Métricas",dificuldade:"Por dificuldade",ganchos:"Ganchos e Temas",inspiracao:"Datas especiais",materiais:"Materiais de apoio",perfil:"Meu perfil",lixo:"Lixo"};
     $("#topTitle").textContent=NAMES[sec]||"";
     document.querySelectorAll("#moreList [data-sec]").forEach(function(b){ b.setAttribute("aria-selected",String(b.dataset.sec===sec)); });
     $("#addArea").style.display = sec==="videos"?"block":"none";
@@ -1548,6 +1552,13 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
     return '<article class="card" data-idea="'+idx+'"><div class="row"><span class="pill accent">'+esc(i.format||"Reels dinâmico")+'</span>'+(i.theme?'<span class="pill">'+esc(i.theme)+'</span>':"")+'</div><h3 style="cursor:default">'+esc(i.title)+'</h3>'+(i.hook?'<p class="hookq"><b>Gancho:</b> '+esc(i.hook)+'</p>':"")+(i.basedOn?'<p class="snip"><b>Validado em:</b> '+esc(i.basedOn)+'</p>':"")+(i.why?'<p class="snip">'+esc(i.why)+'</p>':"")+(i.script?'<details><summary>Ver roteiro</summary><p class="snip" style="white-space:pre-wrap">'+esc(i.script)+'</p></details>':"")+'<div class="row"><button class="btn small primary" type="button" data-ideasave>Guardar como ideia</button></div></article>';
   }
   var LVNAME={facil:"Fácil",medio:"Médio",dificil:"Difícil",none:"Sem nível"}, LVORDER=["facil","medio","dificil","none"];
+  function renderLixo(){
+    var l=trashList(), h='<h2 class="sec" style="margin-top:6px">Lixo</h2><div class="info">Os vídeos que você exclui ficam aqui. Dá para restaurar ou apagar de vez. Apagar de vez não tem volta.</div>';
+    if(!l.length){ $("#view").innerHTML=h+'<div class="empty">O Lixo está vazio.</div>'; return; }
+    h+='<div class="row" style="margin-bottom:10px"><button class="btn danger small" type="button" id="lxEmpty">Esvaziar o Lixo ('+l.length+')</button></div><div class="list">';
+    h+=l.map(function(x){ return '<article class="card"><div class="row"><span class="pill">'+esc(BYKEY[x.status].label)+'</span><span class="hint">Excluído em '+esc(new Date(x.trashed).toLocaleDateString("pt-BR"))+'</span></div><h3 class="t">'+esc(x.title)+'</h3><div class="row"><button class="btn small primary" type="button" data-lxres="'+esc(x.id)+'">Restaurar</button><button class="btn small danger" type="button" data-lxdel="'+esc(x.id)+'">Apagar de vez</button></div></article>'; }).join("");
+    $("#view").innerHTML=h+'</div>';
+  }
   function renderNivel(){
     var stages={ideia:["ideia"],pendente:["pendente"],pronto:["pronto"],todos:["ideia","pendente","pronto","gravado","editado"]}[lvStage];
     var base=active().filter(function(x){return stages.indexOf(x.status)>=0;});
@@ -1987,6 +1998,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
     else if(sec==="inspiracao") renderInspiracao();
     else if(sec==="dificuldade") renderNivel();
     else if(sec==="materiais") renderMats();
+    else if(sec==="lixo") renderLixo();
     else if(sec==="ideias") renderIdeias();
     else if(sec==="metricas") renderMetrics();
     else renderPerfil();
@@ -2004,6 +2016,9 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
   document.addEventListener("click",async function(e){
     var T=e.target;
     if(selMode&&sec==="videos"){ var sc=T.closest(".card[data-id]"); if(sc){ e.preventDefault(); togglePick(sc); return; } }
+    var lr=T.closest("[data-lxres]"); if(lr){ var li=items[lr.dataset.lxres]; if(li){ var ri=normalize(li); ri.trashed=0; try{ await syncCalendar(ri); }catch(err){} await put(ri); toast("Vídeo restaurado."); } return; }
+    var ld=T.closest("[data-lxdel]"); if(ld){ if(ld.dataset.armed!=="1"){ ld.dataset.armed="1"; ld.textContent="Confirmar"; return; } await delDoc("videos",ld.dataset.lxdel); toast("Apagado de vez."); return; }
+    var le=T.closest("#lxEmpty"); if(le){ if(le.dataset.armed!=="1"){ le.dataset.armed="1"; le.textContent="Confirmar: apagar tudo de vez"; return; } var tl=trashList(); for(var q2=0;q2<tl.length;q2++) await delDoc("videos",tl[q2].id); toast("Lixo esvaziado."); return; }
     var hp=T.closest("[data-hkpick]"); if(hp){ themeF=hp.dataset.hkpick; render(); return; }
     var th=T.closest("[data-themeset]"); if(th){ try{ localStorage.setItem("meu-estudio-theme",th.dataset.themeset); }catch(err){} applyTheme(th.dataset.themeset); render(); return; }
     var s=T.closest("[data-sec]"); if(s){ e.preventDefault(); sec=s.dataset.sec; $("#overlayMore").classList.remove("open"); render(); window.scrollTo(0,0); return; }
@@ -2143,7 +2158,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
     var ids=selIds(); if(!ids.length) return;
     $("#selDel").disabled=true;
     var snaps=await removeVideos(ids); delSel={}; selMode=false; render();
-    toast(snaps.length+(snaps.length===1?" vídeo excluído.":" vídeos excluídos."),function(){return restoreVideos(snaps);});
+    toast(snaps.length+(snaps.length===1?" vídeo foi para o Lixo.":" vídeos foram para o Lixo."),function(){return restoreVideos(snaps);});
   });
   /* editor de vídeo */
   $("#f_status").innerHTML=STATUS.map(function(s){return '<option value="'+s.k+'">'+s.label+'</option>';}).join("");
@@ -2202,10 +2217,10 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
   $("#overlay").addEventListener("click",function(e){ if(e.target===$("#overlay")) closeEditor(); });
   $("#f_del").addEventListener("click",async function(){
     var b=$("#f_del");
-    if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Confirmar exclusão"; return; }
+    if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Confirmar"; return; }
     var id=editingId, wasDraft=!items[id]; closeEditor(); if(wasDraft) return;
     var snaps=await removeVideos([id]);
-    if(snaps.length) toast("Vídeo excluído.",function(){return restoreVideos(snaps);});
+    if(snaps.length) toast("Vídeo foi para o Lixo.",function(){return restoreVideos(snaps);});
   });
   $("#sheet").addEventListener("submit",async function(e){
     e.preventDefault();
