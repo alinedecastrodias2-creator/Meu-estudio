@@ -313,6 +313,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
 .more-list{display:flex;flex-direction:column;gap:8px}
 .more-list button{display:flex;gap:12px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:14px;font-weight:600;font-size:1rem}
 .more-list button[aria-selected="true"]{border-color:var(--accent);color:var(--accent)}
+.more-list button svg{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .themebtn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 10px;font-size:.78rem;color:var(--ink-soft)}
 @media (prefers-reduced-motion:no-preference){.card,.btn,.tab,.nav button{transition:background .15s,border-color .15s}}
 
@@ -381,15 +382,15 @@ h1{font-weight:800}
   <main id="view"></main>
 </div>
 
-<nav class="bnav" id="bnav" aria-label="Seções"><button type="button" data-sec="videos" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="3"/><path d="M17 10l4-2v8l-4-2"/></svg>Vídeos</button><button type="button" data-sec="ideias" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>Ideias</button><button type="button" data-sec="agenda" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="12" cy="15" r="1.2"/></svg>Agenda</button><button type="button" data-sec="metricas" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Métricas</button><button type="button" id="navMenu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</button></nav>
+<nav class="bnav" id="bnav" aria-label="Seções"><button type="button" data-sec="videos" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="3"/><path d="M17 10l4-2v8l-4-2"/></svg>Vídeos</button><button type="button" data-sec="materiais" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg>Materiais</button><button type="button" data-sec="ideias" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>Ideias</button><button type="button" data-sec="agenda" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="12" cy="15" r="1.2"/></svg>Agenda</button><button type="button" data-sec="metricas" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Métricas</button></nav>
 <div class="overlay" id="overlayMore" role="dialog" aria-modal="true" aria-labelledby="moreTitle">
   <div class="sheet"><h2 id="moreTitle">Menu</h2>
     <div class="more-list" id="moreList">
-      <button type="button" data-sec="dificuldade">Vídeos por nível de dificuldade</button>
-      <button type="button" data-sec="ganchos">Ganchos e Temas</button>
-      <button type="button" data-sec="inspiracao">Datas especiais</button>
-      <button type="button" data-sec="materiais">Materiais de apoio</button>
-      <button type="button" data-sec="perfil">Meu perfil e aparência</button>
+      <button type="button" data-sec="dificuldade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7"/></svg>Vídeos por nível de dificuldade</button>
+      <button type="button" data-sec="ganchos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Ganchos e Temas</button>
+      <button type="button" data-sec="inspiracao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Datas especiais</button>
+      <button type="button" data-sec="perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Meu perfil e aparência</button>
+      <button type="button" data-sec="lixo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>Lixo</button>
     </div>
   </div>
 </div>
@@ -719,7 +720,7 @@ h1{font-weight:800}
     ["theme","hook","script","caption","hashtags","recordAt","editAt","publishAt","igUrl","batchId","batchEv","derivedFrom","recLevel","editLevel"].forEach(function(f){ if(typeof it[f]!=="string") it[f]=""; });
     it.duration=it.duration||60; it.editDuration=it.editDuration||90; it.sync=it.sync!==false;
     var ev=it.ev||{}; it.ev={rec:ev.rec||it.eventId||"",edit:ev.edit||"",pub:ev.pub||""};
-    it.metrics=it.metrics||{}; it.chk=Array.isArray(it.chk)?it.chk:[]; it.win=!!it.win; it.archived=false; it.snooze=0;
+    it.metrics=it.metrics||{}; it.chk=Array.isArray(it.chk)?it.chk:[]; it.win=!!it.win; it.archived=false; it.snooze=0; it.trashed=Number(it.trashed)||0;
     return it;
   }
 
@@ -789,7 +790,7 @@ h1{font-weight:800}
   function getTomb(){ try{ return JSON.parse(localStorage.getItem("meu-estudio-tomb")||"{}")||{}; }catch(e){ return {}; } }
   function setTomb(t){ try{ localStorage.setItem("meu-estudio-tomb",JSON.stringify(t)); }catch(e){} }
   function stamp(o){ o._u=Date.now(); return o; }
-  function schedSync(){ if(!loaded) return; clearTimeout(syncTimer); syncTimer=setTimeout(function(){ runSync(false); },8000); }
+  function schedSync(){ if(!loaded) return; ghSched(); clearTimeout(syncTimer); syncTimer=setTimeout(function(){ runSync(false); },8000); }
   async function sEnc(str){
     var bytes=new TextEncoder().encode(str), pre="j:";
     if(typeof CompressionStream!=="undefined"&&typeof Blob!=="undefined"&&Blob.prototype.stream){
@@ -986,7 +987,8 @@ h1{font-weight:800}
   }
 
   /* ---------- dados derivados ---------- */
-  function all(){return arr(items);}
+  function all(){return arr(items).filter(function(x){return !x.trashed;});}
+  function trashList(){return arr(items).filter(function(x){return x.trashed;}).sort(function(a,b){return b.trashed-a.trashed;});}
   function active(){return all().filter(function(x){return !x.archived;});}
   function pubs(){return active().filter(function(x){return x.status==="publicado";});}
   function allMats(){return arr(mats);}
@@ -1077,14 +1079,15 @@ h1{font-weight:800}
   /* ---------- excluir e desfazer ---------- */
   function snap(o){return JSON.parse(JSON.stringify(o));}
   function undoPut(prev){return function(){return putDoc("videos",normalize(prev));};}
-  async function removeVideos(ids){
+  async function removeVideos(ids,hard){
     var snaps=[], failed=false;
     for(var j=0;j<ids.length;j++){
       var it=items[ids[j]]; if(!it) continue;
       snaps.push(snap(it));
       if(mcp){ for(var i=0;i<KINDS.length;i++){ var ev=it.ev&&it.ev[KINDS[i].k]; if(ev){ try{ await cal("delete_event",{eventId:ev}); }catch(err){ failed=true; } } } }
       delete sel[ids[j]]; delete delSel[ids[j]];
-      await delDoc("videos",ids[j]);
+      if(hard) await delDoc("videos",ids[j]);
+      else{ var tr=normalize(it); tr.trashed=Date.now(); tr.ev={rec:"",edit:"",pub:""}; tr.eventId=""; tr.calState=""; await put(tr); }
     }
     if(failed) toast("Excluí, mas algum evento continua na Agenda.");
     return snaps;
@@ -1096,7 +1099,7 @@ h1{font-weight:800}
       await put(it);
     }
   }
-  function undoCreated(ids){return async function(){ await removeVideos(ids); };}
+  function undoCreated(ids){return async function(){ await removeVideos(ids,true); };}
 
   /* ---------- ações ---------- */
   async function advance(id){
@@ -1175,7 +1178,7 @@ h1{font-weight:800}
     $("#metBox").open = !!focusMetrics || it.status==="publicado";
     renderEditorMats(); m2Reset();
     renderThemeChips();
-    $("#f_del").textContent="Excluir"; $("#f_del").dataset.armed="";
+    $("#f_del").textContent="Mandar para o Lixo"; $("#f_del").dataset.armed="";
     $("#overlay").classList.add("open"); $("#f_title").focus();
   }
   function setLevels(r,e){ var v={recLevel:r||"",editLevel:e||""}; document.querySelectorAll(".dgrp").forEach(function(g){ g.querySelectorAll(".dbox").forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.level===v[g.dataset.diff])); }); }); }
@@ -1199,10 +1202,10 @@ h1{font-weight:800}
       '<div class="sum next"><b>'+(up?esc(KBYKEY[up.kind].label+": "+up.it.title):"Nada marcado")+'</b><span>'+(up?esc(whenText(up.at)):"Marque datas nos vídeos")+'</span></div>';
   }
   function renderNav(){
-    var extra=["dificuldade","ganchos","inspiracao","materiais","perfil"];
+    var extra=["dificuldade","ganchos","inspiracao","perfil","lixo"];
     document.querySelectorAll("#bnav [data-sec]").forEach(function(b){ b.setAttribute("aria-selected",String(b.dataset.sec===sec)); });
     $("#menuBtn").setAttribute("aria-selected",String(extra.indexOf(sec)>=0));
-    var NAMES={videos:"Vídeos",ideias:"Ideias",agenda:"Agenda",metricas:"Métricas",dificuldade:"Por dificuldade",ganchos:"Ganchos e Temas",inspiracao:"Datas especiais",materiais:"Materiais de apoio",perfil:"Meu perfil"};
+    var NAMES={videos:"Vídeos",ideias:"Ideias",agenda:"Agenda",metricas:"Métricas",dificuldade:"Por dificuldade",ganchos:"Ganchos e Temas",inspiracao:"Datas especiais",materiais:"Materiais de apoio",perfil:"Meu perfil",lixo:"Lixo"};
     $("#topTitle").textContent=NAMES[sec]||"";
     document.querySelectorAll("#moreList [data-sec]").forEach(function(b){ b.setAttribute("aria-selected",String(b.dataset.sec===sec)); });
     $("#addArea").style.display = sec==="videos"?"block":"none";
@@ -1213,7 +1216,7 @@ h1{font-weight:800}
   }
   function renderTabs(){
     var a=active(), html="";
-    html+='<button class="tab" role="tab" data-tab="todos" aria-selected="'+(tab==="todos"&&!q)+'">TODOS<span class="n">'+a.length+'</span></button>';
+    html+='<button class="tab" role="tab" data-tab="todos" aria-selected="'+(tab==="todos"&&!q)+'">GERAL<span class="n">'+a.filter(function(x){return x.status!=="publicado";}).length+'</span></button>';
     STATUS.forEach(function(s){
       var n=a.filter(function(x){return x.status===s.k;}).length;
       html+='<button class="tab" role="tab" data-tab="'+s.k+'" aria-selected="'+(tab===s.k&&!q)+'">'+s.tab+'<span class="n">'+n+'</span></button>';
@@ -1266,7 +1269,7 @@ h1{font-weight:800}
       var t=q.toLowerCase();
       list=active().filter(function(x){return (x.title+" "+x.theme+" "+x.hook+" "+x.script+" "+x.caption+" "+x.hashtags).toLowerCase().indexOf(t)>=0;});
       empty="Nada encontrado para essa busca.";
-    }else if(tab==="todos"){ list=active(); empty="Nenhum vídeo ainda. Toque no campo acima para criar um."; }
+    }else if(tab==="todos"){ list=active().filter(function(x){return x.status!=="publicado";}); empty="Nenhum vídeo ainda. Toque no campo acima para criar um."; }
     else{ if(!BYKEY[tab]) tab="ideia"; list=active().filter(function(x){return x.status===tab;}); empty=BYKEY[tab].empty; }
     if(themeF) list=list.filter(function(x){return x.theme===themeF;});
     list=sortedByDate(list);
@@ -1579,6 +1582,13 @@ h1{font-weight:800}
     return '<article class="card" data-idea="'+idx+'"><div class="row"><span class="pill accent">'+esc(i.format||"Reels dinâmico")+'</span>'+(i.theme?'<span class="pill">'+esc(i.theme)+'</span>':"")+'</div><h3 style="cursor:default">'+esc(i.title)+'</h3>'+(i.hook?'<p class="hookq"><b>Gancho:</b> '+esc(i.hook)+'</p>':"")+(i.basedOn?'<p class="snip"><b>Validado em:</b> '+esc(i.basedOn)+'</p>':"")+(i.why?'<p class="snip">'+esc(i.why)+'</p>':"")+(i.script?'<details><summary>Ver roteiro</summary><p class="snip" style="white-space:pre-wrap">'+esc(i.script)+'</p></details>':"")+'<div class="row"><button class="btn small primary" type="button" data-ideasave>Guardar como ideia</button></div></article>';
   }
   var LVNAME={facil:"Fácil",medio:"Médio",dificil:"Difícil",none:"Sem nível"}, LVORDER=["facil","medio","dificil","none"];
+  function renderLixo(){
+    var l=trashList(), h='<h2 class="sec" style="margin-top:6px">Lixo</h2><div class="info">Os vídeos que você exclui ficam aqui. Dá para restaurar ou apagar de vez. Apagar de vez não tem volta.</div>';
+    if(!l.length){ $("#view").innerHTML=h+'<div class="empty">O Lixo está vazio.</div>'; return; }
+    h+='<div class="row" style="margin-bottom:10px"><button class="btn danger small" type="button" id="lxEmpty">Esvaziar o Lixo ('+l.length+')</button></div><div class="list">';
+    h+=l.map(function(x){ return '<article class="card"><div class="row"><span class="pill">'+esc(BYKEY[x.status].label)+'</span><span class="hint">Excluído em '+esc(new Date(x.trashed).toLocaleDateString("pt-BR"))+'</span></div><h3 class="t">'+esc(x.title)+'</h3><div class="row"><button class="btn small primary" type="button" data-lxres="'+esc(x.id)+'">Restaurar</button><button class="btn small danger" type="button" data-lxdel="'+esc(x.id)+'">Apagar de vez</button></div></article>'; }).join("");
+    $("#view").innerHTML=h+'</div>';
+  }
   function renderNivel(){
     var stages={ideia:["ideia"],pendente:["pendente"],pronto:["pronto"],todos:["ideia","pendente","pronto","gravado","editado"]}[lvStage];
     var base=active().filter(function(x){return stages.indexOf(x.status)>=0;});
@@ -1991,12 +2001,11 @@ h1{font-weight:800}
     function tx(id,label,val,rows,ph){return '<div class="f"><label for="'+id+'">'+label+'</label><textarea id="'+id+'" rows="'+rows+'" placeholder="'+esc(ph||"")+'">'+esc(val||"")+'</textarea></div>';}
     var cur=getTheme();
     var h='<h2 class="sec" style="margin-top:6px">Sincronizar site e aplicativo</h2><div class="row"><button class="btn primary" id="syncNow" type="button">Sincronizar agora</button></div><div class="info" id="syncCal">'+esc(syncMsg||"Ainda não sincronizado nesta sessão.")+'</div>';
-    h+='<h2 class="sec">Aparência</h2><div class="row" style="margin-bottom:8px">'+[["auto","Automático"],["light","Claro"],["dark","Escuro"]].map(function(t){return '<button type="button" class="btn'+(cur===t[0]?" primary":"")+'" data-themeset="'+t[0]+'" aria-pressed="'+(cur===t[0])+'">'+t[1]+'</button>';}).join("")+'</div>';
+    h+=ghUiHtml(); h+='<h2 class="sec">Aparência</h2><div class="row" style="margin-bottom:8px">'+[["auto","Automático"],["light","Claro"],["dark","Escuro"]].map(function(t){return '<button type="button" class="btn'+(cur===t[0]?" primary":"")+'" data-themeset="'+t[0]+'" aria-pressed="'+(cur===t[0])+'">'+t[1]+'</button>';}).join("")+'</div>';
     h+='<h2 class="sec">Meu perfil</h2><div class="inl">';
     h+='<div class="f"><label for="p_handle">Seu perfil no Instagram</label><input id="p_handle" value="'+esc(p.handle||"")+'" placeholder="@seuperfil" maxlength="60"></div>';
     h+=tx("p_niche","Nicho e assuntos do perfil",p.niche,3,"Sobre o que você fala e o que torna o seu perfil diferente")+tx("p_audience","Quem assiste",p.audience,2,"Idade, interesses, o que a pessoa quer resolver")+tx("p_tone","Tom de voz",p.tone,2,"Ex.: leve, direto, didático, com humor")+tx("p_pillars","Temas recorrentes",p.pillars,2,"Ex.: dicas de estudo, rotina, bastidores")+tx("p_editing","Meu estilo de edição",p.editing,2,"Ex.: cortes rápidos, legenda grande na tela, trilha, zoom, B-roll")+tx("p_routine","Sua rotina de gravação e postagem",p.routine,3,"Dias e horários em que costuma gravar, editar e postar; quantos vídeos por semana")+tx("p_avoid","O que evitar",p.avoid,2,"Assuntos, palavras ou promessas que você não quer usar")+tx("p_examples","Exemplos do seu estilo",p.examples,3,"Cole uma legenda ou frase que represente bem o seu jeito de falar");
     h+='<div class="row"><button class="btn primary" id="profSave" type="button">Salvar perfil</button></div></div>';
-    h+='<h2 class="sec">Checklist padrão</h2><div class="hint" style="margin:0 0 8px">Um item por linha.</div><div class="inl">'+tx("p_chk_rec","Antes de gravar",(p.chk&&p.chk.rec)||"",4,L.rec.join("\n"))+tx("p_chk_edit","Na edição",(p.chk&&p.chk.edit)||"",4,L.edit.join("\n"))+tx("p_chk_pub","Antes de postar",(p.chk&&p.chk.pub)||"",4,L.pub.join("\n"))+'<div class="row"><button class="btn primary" id="chkSave" type="button">Salvar checklist</button></div></div>';
     h+='<h2 class="sec">Datas especiais</h2><label class="check"><input type="checkbox" id="p_health"'+(p.showHealth===false?"":" checked")+'><span>Mostrar datas e campanhas de saúde em Datas especiais</span></label>';
     h+='<form class="inl" id="dateAdd"><div class="two"><div class="f"><label for="dt_date">Data (repete todo ano)</label><input id="dt_date" type="date" required></div><div class="f"><label for="dt_name">Nome</label><input id="dt_name" required maxlength="80" placeholder="Ex.: aniversário do perfil"></div></div><div class="row"><button class="btn small" type="submit">Adicionar data</button></div></form>';
     var ds=(p.dates||[]);
@@ -2019,6 +2028,7 @@ h1{font-weight:800}
     else if(sec==="inspiracao") renderInspiracao();
     else if(sec==="dificuldade") renderNivel();
     else if(sec==="materiais") renderMats();
+    else if(sec==="lixo") renderLixo();
     else if(sec==="ideias") renderIdeias();
     else if(sec==="metricas") renderMetrics();
     else renderPerfil();
@@ -2036,6 +2046,9 @@ h1{font-weight:800}
   document.addEventListener("click",async function(e){
     var T=e.target;
     if(selMode&&sec==="videos"){ var sc=T.closest(".card[data-id]"); if(sc){ e.preventDefault(); togglePick(sc); return; } }
+    var lr=T.closest("[data-lxres]"); if(lr){ var li=items[lr.dataset.lxres]; if(li){ var ri=normalize(li); ri.trashed=0; try{ await syncCalendar(ri); }catch(err){} await put(ri); toast("Vídeo restaurado."); } return; }
+    var ld=T.closest("[data-lxdel]"); if(ld){ if(ld.dataset.armed!=="1"){ ld.dataset.armed="1"; ld.textContent="Confirmar"; return; } await delDoc("videos",ld.dataset.lxdel); toast("Apagado de vez."); return; }
+    var le=T.closest("#lxEmpty"); if(le){ if(le.dataset.armed!=="1"){ le.dataset.armed="1"; le.textContent="Confirmar: apagar tudo de vez"; return; } var tl=trashList(); for(var q2=0;q2<tl.length;q2++) await delDoc("videos",tl[q2].id); toast("Lixo esvaziado."); return; }
     var hp=T.closest("[data-hkpick]"); if(hp){ themeF=hp.dataset.hkpick; render(); return; }
     var th=T.closest("[data-themeset]"); if(th){ try{ localStorage.setItem("meu-estudio-theme",th.dataset.themeset); }catch(err){} applyTheme(th.dataset.themeset); render(); return; }
     var s=T.closest("[data-sec]"); if(s){ e.preventDefault(); sec=s.dataset.sec; $("#overlayMore").classList.remove("open"); render(); window.scrollTo(0,0); return; }
@@ -2097,8 +2110,10 @@ h1{font-weight:800}
     var dc=T.closest("[data-date]"); if(dc&&T.closest("[data-datesave]")){ var u=upcomingDates(60)[Number(dc.dataset.date)]; if(u){ await createIdea({title:"Vídeo sobre "+u.sp.name,theme:u.sp.note,script:u.sp.note?"Assunto: "+u.sp.note:""}); toast("Ideia guardada em Ideias."); } return; }
     /* perfil */
     if(T.closest("#syncNow")){ runSync(true); return; }
+ if(T.closest("#ghOn")){ var tv=($("#ghTok").value||"").trim(); if(!tv){ $("#ghTok").focus(); return; } try{ localStorage.setItem("me_gh_token",tv); }catch(e){} try{ await ghApi("/gists?per_page=1"); toast("Nuvem ativada."); render(); ghRun(true); }catch(e){ try{ localStorage.removeItem("me_gh_token"); }catch(x){} toast(e&&e.status===401?"Token não aceito. Confira se copiou inteiro.":"Não consegui conectar. Verifique a internet."); } return; }
+ if(T.closest("#ghNow")){ ghRun(true); return; }
+ if(T.closest("#ghOff")){ try{ localStorage.removeItem("me_gh_token"); localStorage.removeItem("me_gist_id"); }catch(e){} toast("Nuvem desativada neste aparelho."); render(); return; }
     if(T.closest("#profSave")){ readProfileFields(); await saveProfile(); toast("Perfil salvo."); return; }
-    if(T.closest("#chkSave")){ profile.chk={rec:$("#p_chk_rec").value.trim(),edit:$("#p_chk_edit").value.trim(),pub:$("#p_chk_pub").value.trim()}; await saveProfile(); toast("Checklist salvo."); render(); return; }
     var dl=T.closest("[data-datedel]"); if(dl){ readProfileFields(); profile.dates=(profile.dates||[]).filter(function(_,i){return i!==Number(dl.dataset.datedel);}); await saveProfile(); render(); return; }
     /* cartões de vídeo */
     var a=T.closest("[data-act]"); if(a){
@@ -2173,7 +2188,7 @@ h1{font-weight:800}
     var ids=selIds(); if(!ids.length) return;
     $("#selDel").disabled=true;
     var snaps=await removeVideos(ids); delSel={}; selMode=false; render();
-    toast(snaps.length+(snaps.length===1?" vídeo excluído.":" vídeos excluídos."),function(){return restoreVideos(snaps);});
+    toast(snaps.length+(snaps.length===1?" vídeo foi para o Lixo.":" vídeos foram para o Lixo."),function(){return restoreVideos(snaps);});
   });
   /* editor de vídeo */
   $("#f_status").innerHTML=STATUS.map(function(s){return '<option value="'+s.k+'">'+s.label+'</option>';}).join("");
@@ -2232,10 +2247,10 @@ h1{font-weight:800}
   $("#overlay").addEventListener("click",function(e){ if(e.target===$("#overlay")) closeEditor(); });
   $("#f_del").addEventListener("click",async function(){
     var b=$("#f_del");
-    if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Confirmar exclusão"; return; }
+    if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Confirmar"; return; }
     var id=editingId, wasDraft=!items[id]; closeEditor(); if(wasDraft) return;
     var snaps=await removeVideos([id]);
-    if(snaps.length) toast("Vídeo excluído.",function(){return restoreVideos(snaps);});
+    if(snaps.length) toast("Vídeo foi para o Lixo.",function(){return restoreVideos(snaps);});
   });
   $("#sheet").addEventListener("submit",async function(e){
     e.preventDefault();
@@ -2483,7 +2498,6 @@ h1{font-weight:800}
     applyTheme(n);
   });
   $("#menuBtn").addEventListener("click",function(){ $("#overlayMore").classList.add("open"); });
-  $("#navMenu").addEventListener("click",function(){ $("#overlayMore").classList.add("open"); });
   $("#overlayMore").addEventListener("click",function(e){ if(e.target===$("#overlayMore")) $("#overlayMore").classList.remove("open"); });
 
   /* tema, ganchos validados e material dentro do vídeo */
@@ -2633,6 +2647,72 @@ h1{font-weight:800}
   ["f_rec","f_edit","f_pub","b_when","r_when"].forEach(enhanceDT);
 
   setInterval(function(){ if(document.visibilityState==="visible"&&loaded&&mcp) runSync(false); },60000);
+  /* ---------- nuvem automática pelo GitHub (gist privado) ---------- */
+  var GH_DESC="meu-estudio-sync", GH_FILE="dados.txt", ghBusy=false, ghAgain=false, ghT=null, ghMsg="", ghEtag="";
+  function ghTok(){ try{ return localStorage.getItem("me_gh_token")||""; }catch(e){ return ""; } }
+  function ghSched(){ if(!ghTok()||ghBusy) return; clearTimeout(ghT); ghT=setTimeout(function(){ ghRun(false); },5000); }
+  async function ghApi(path,opt){
+    opt=opt||{}; var hd={"Authorization":"Bearer "+ghTok(),"Accept":"application/vnd.github+json"}; if(opt.etag) hd["If-None-Match"]=opt.etag;
+    var r=await fetch("https://api.github.com"+path,{method:opt.method||"GET",headers:hd,body:opt.body});
+    if(r.status===304) return {notModified:true};
+    if(!r.ok){ var e=new Error("http "+r.status); e.status=r.status; throw e; }
+    var j=await r.json(); try{ var et=r.headers&&r.headers.get&&r.headers.get("ETag"); if(et) j.__etag=et; }catch(x){} return j;
+  }
+  async function ghFind(){
+    var id=""; try{ id=localStorage.getItem("me_gist_id")||""; }catch(e){}
+    if(id) return id;
+    for(var p=1;p<=5;p++){
+      var l=await ghApi("/gists?per_page=100&page="+p), g=null;
+      for(var i=0;i<l.length;i++){ if(l[i].description===GH_DESC&&l[i].files&&l[i].files[GH_FILE]){ g=l[i]; break; } }
+      if(g){ id=g.id; break; }
+      if(l.length<100) break;
+    }
+    if(!id){ var o={}; o[GH_FILE]={content:await sEnc(snapshot())}; var c=await ghApi("/gists",{method:"POST",body:JSON.stringify({description:GH_DESC,public:false,files:o})}); id=c.id; }
+    try{ localStorage.setItem("me_gist_id",id); }catch(e){}
+    return id;
+  }
+  function setGhUi(t){ ghMsg=t; var el=$("#ghInfo"); if(el) el.textContent=t; }
+  async function ghRun(manual){
+    if(!ghTok()) return;
+    if(!loaded){ if(manual) toast("Aguarde o app terminar de abrir."); return; }
+    if(ghBusy){ ghAgain=true; return; }
+    ghBusy=true; setGhUi("☁️ Sincronizando…");
+    var msg="";
+    try{
+      var id=await ghFind(), g=await ghApi("/gists/"+id,{etag:ghEtag}), changed=0, bad=false, f=null;
+      if(g.notModified){ f=true; }
+      else{
+        ghEtag=g.__etag||""; f=g.files&&g.files[GH_FILE];
+        if(f){
+          var txt=f.content; if(f.truncated&&f.raw_url) txt=await (await fetch(f.raw_url)).text();
+          if(txt&&txt.trim()){ try{ changed=await mergeRemote(JSON.parse(await sDec(txt.trim()))); }catch(e){ bad=true; console.warn("nuvem leitura",e); } }
+        }
+      }
+      if(changed) render();
+      if(bad) throw new Error("leitura");
+      var snap=snapshot(), hs=hashStr(snap), last=""; try{ last=localStorage.getItem("meu-estudio-ghhash")||""; }catch(e){}
+      if(!f||last!==hs){
+        var body={}; body[GH_FILE]={content:await sEnc(snap)};
+        await ghApi("/gists/"+id,{method:"PATCH",body:JSON.stringify({files:body})}); ghEtag="";
+        try{ localStorage.setItem("meu-estudio-ghhash",hs); }catch(e){}
+      }
+      var h=new Date(); msg="Sincronizado às "+pad2(h.getHours())+":"+pad2(h.getMinutes())+(changed?" · "+changed+" atualização(ões) recebida(s)":"");
+      setGhUi("☁️ "+msg); if(manual) toast(changed?"Sincronizado. Dados do outro lugar foram trazidos.":"Sincronizado. Tudo em dia.");
+    }catch(e){
+      if(e&&e.status===401){ setGhUi("☁️ Token inválido ou vencido. Gere outro e ative de novo."); if(manual) toast("Token inválido ou vencido."); }
+      else if(e&&e.status===404){ try{ localStorage.removeItem("me_gist_id"); }catch(x){} setGhUi("☁️ Não achei os dados na nuvem. Tente de novo."); if(manual) toast("Não achei os dados na nuvem. Tente de novo."); }
+      else{ setGhUi("☁️ Não consegui sincronizar agora. Seus dados estão salvos neste aparelho."); if(manual) toast("Não consegui sincronizar agora."); }
+    }
+    ghBusy=false; if(ghAgain){ ghAgain=false; ghSched(); }
+  }
+  function ghUiHtml(){
+    var h='<h2 class="sec">Nuvem automática (GitHub)</h2>';
+    if(ghTok()) return h+'<div class="info">Ativa neste aparelho. Vídeos, materiais, ganchos e perfil vão e voltam sozinhos por um gist privado da sua conta do GitHub, sem depender da agenda.</div><div class="row"><button class="btn primary" id="ghNow" type="button">Sincronizar agora</button><button class="btn" id="ghOff" type="button">Desativar neste aparelho</button></div><div class="info" id="ghInfo">'+esc(ghMsg||"Pronto.")+'</div>';
+    return h+'<div class="info">Para o site, o app e o Claude terem os mesmos vídeos sem copiar nada. Faça uma vez em cada aparelho:<br><b>1)</b> toque em <a href="https://github.com/settings/tokens/new?description=Meu%20Est%C3%BAdio&scopes=gist" target="_blank" rel="noopener"><b>Criar token no GitHub</b></a>. Em “Expiration” escolha <b>No expiration</b>, role até o fim e toque em <b>Generate token</b>.<br><b>2)</b> Copie o token (começa com <b>ghp_</b>).<br><b>3)</b> Volte aqui, cole abaixo e toque em Ativar.</div><div class="field"><label for="ghTok">Token do GitHub</label><input id="ghTok" type="password" placeholder="Cole o token aqui" autocomplete="off"></div><div class="row"><button class="btn primary" id="ghOn" type="button">Ativar</button></div><div class="info" id="ghInfo" hidden></div>';
+  }
+  setInterval(function(){ if(document.visibilityState==="visible"&&loaded&&ghTok()) ghRun(false); },120000);
+  setTimeout(function(){ if(ghTok()) ghRun(false); },3500);
+  setTimeout(function(){ if(ghTok()) ghRun(false); },9000);
   document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="visible") schedSync(); });
   initStore();
 })();
