@@ -317,14 +317,14 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
 @media (prefers-reduced-motion:no-preference){.card,.btn,.tab,.nav button{transition:background .15s,border-color .15s}}
 
 /* ===== Estética v2: arredondada, degradê vermelho ===== */
-:root[data-theme="light"] .topbar{background:rgba(163,18,31,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) .topbar{background:rgba(163,18,31,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}}
-:root[data-theme="light"]{--paper:#d9444a;--card:#ffffff;--line:#f1d6d0;--ink:#3a1618;--ink-soft:#8a5f5c;--accent:#c0212f;--accent-ink:#fff;--accent-soft:#fde0dd}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]){--paper:#d9444a;--card:#ffffff;--line:#f1d6d0;--ink:#3a1618;--ink-soft:#8a5f5c;--accent:#c0212f;--accent-ink:#fff;--accent-soft:#fde0dd}}
-:root[data-theme="light"] html,:root[data-theme="light"] body{background:linear-gradient(170deg,#a3121f 0,#c92a35 30%,#e0554f 65%,#f2998c 100%) fixed}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) html,:root:not([data-theme="dark"]):not([data-theme="light"]) body{background:linear-gradient(170deg,#a3121f 0,#c92a35 30%,#e0554f 65%,#f2998c 100%) fixed}}
-:root[data-theme="light"] .tab[aria-selected="true"]{background:#fff;color:#b01c2b;font-weight:700;box-shadow:0 4px 14px rgba(80,0,10,.3)}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) .tab[aria-selected="true"]{background:#fff;color:#b01c2b;font-weight:700;box-shadow:0 4px 14px rgba(80,0,10,.3)}}
+:root[data-theme="light"] .topbar{background:rgba(246,236,220,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) .topbar{background:rgba(246,236,220,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}}
+:root[data-theme="light"]{--paper:#f6ecdc;--card:#ffffff;--line:#ecdfca;--ink:#2b1f1c;--ink-soft:#7d6e66;--accent:#c0212f;--accent-ink:#fff;--accent-soft:#fde0dd}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]){--paper:#f6ecdc;--card:#ffffff;--line:#ecdfca;--ink:#2b1f1c;--ink-soft:#7d6e66;--accent:#c0212f;--accent-ink:#fff;--accent-soft:#fde0dd}}
+:root[data-theme="light"] html,:root[data-theme="light"] body{background:linear-gradient(170deg,#f7eedf 0,#f4e9d8 100%) fixed}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) html,:root:not([data-theme="dark"]):not([data-theme="light"]) body{background:linear-gradient(170deg,#f7eedf 0,#f4e9d8 100%) fixed}}
+:root[data-theme="light"] .tab[aria-selected="true"]{background:linear-gradient(135deg,#a8132a,#e4474f);color:#fff;box-shadow:0 4px 14px rgba(192,33,47,.3)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) .tab[aria-selected="true"]{background:linear-gradient(135deg,#a8132a,#e4474f);color:#fff;box-shadow:0 4px 14px rgba(192,33,47,.3)}}
 :root[data-theme="light"] .bnav button[aria-selected="true"]{background:linear-gradient(135deg,#fde0dd,#ffe9d9);color:#c0212f}
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) .bnav button[aria-selected="true"]{background:linear-gradient(135deg,#fde0dd,#ffe9d9);color:#c0212f}}
 :root[data-theme="light"] .sum.t-blue{background:linear-gradient(135deg,#dbeafe,#c3dcff)!important}
@@ -340,13 +340,6 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
 :root[data-theme="light"] .tab{box-shadow:0 3px 10px rgba(192,33,47,.12)}
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) .tab{box-shadow:0 3px 10px rgba(192,33,47,.12)}}
 
-:root[data-theme="light"] h1,:root[data-theme="light"] .topbar,:root[data-theme="light"] .topbar *:not(button):not(svg):not(path){color:#fff}
-:root[data-theme="light"] .sec,:root[data-theme="light"] .empty,:root[data-theme="light"] .hint{color:#fff}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) h1,:root:not([data-theme="dark"]):not([data-theme="light"]) .topbar,:root:not([data-theme="dark"]):not([data-theme="light"]) .topbar *:not(button):not(svg):not(path){color:#fff}:root:not([data-theme="dark"]):not([data-theme="light"]) .sec,:root:not([data-theme="dark"]):not([data-theme="light"]) .empty,:root:not([data-theme="dark"]):not([data-theme="light"]) .hint{color:#fff}}
-:root[data-theme="light"] .sync>span,:root[data-theme="light"] main .check,:root[data-theme="light"] main .check *{color:#fff!important}:root[data-theme="light"] .sheet .check,:root[data-theme="light"] .sheet .check *,:root[data-theme="light"] .sheet .sec{color:var(--ink)!important}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) .sync>span,:root:not([data-theme="dark"]):not([data-theme="light"]) main .check,:root:not([data-theme="dark"]):not([data-theme="light"]) main .check *{color:#fff!important}:root:not([data-theme="dark"]):not([data-theme="light"]) .sheet .check,:root:not([data-theme="dark"]):not([data-theme="light"]) .sheet .check *,:root:not([data-theme="dark"]):not([data-theme="light"]) .sheet .sec{color:var(--ink)!important}}
-:root[data-theme="light"] #compactWrap{color:#fff!important}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]) #compactWrap{color:#fff!important}}
 .topbar{margin-left:-16px;margin-right:-16px;padding:8px 16px}
 h1{font-weight:800}
 .sum,.sum.t-blue,.sum.t-orange,.sum.t-purple{border:0!important;border-radius:24px;padding:16px}
@@ -1214,7 +1207,6 @@ h1{font-weight:800}
     document.querySelectorAll("#moreList [data-sec]").forEach(function(b){ b.setAttribute("aria-selected",String(b.dataset.sec===sec)); });
     $("#addArea").style.display = sec==="videos"?"block":"none";
     $("#tabsArea").style.display = sec==="videos"?"block":"none";
-    $("#compactWrap").style.display=sec==="videos"?"flex":"none";
     $("#filterArea").style.display = (sec==="videos"||sec==="materiais")?"block":"none";
     var flt=document.querySelector("#filterArea .filters"); if(flt) flt.style.display=(sec==="materiais"&&matTab==="study")?"none":"";
     $("#summary").style.display = sec==="videos"?"":"none";
