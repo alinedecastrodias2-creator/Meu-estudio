@@ -349,14 +349,13 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
   <main id="view"></main>
 </div>
 
-<nav class="bnav" id="bnav" aria-label="Seções"><button type="button" data-sec="videos" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="3"/><path d="M17 10l4-2v8l-4-2"/></svg>Vídeos</button><button type="button" data-sec="ideias" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>Ideias</button><button type="button" data-sec="agenda" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="12" cy="15" r="1.2"/></svg>Agenda</button><button type="button" data-sec="metricas" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Métricas</button><button type="button" id="navMenu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</button></nav>
+<nav class="bnav" id="bnav" aria-label="Seções"><button type="button" data-sec="videos" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="3"/><path d="M17 10l4-2v8l-4-2"/></svg>Vídeos</button><button type="button" data-sec="materiais" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg>Materiais</button><button type="button" data-sec="ideias" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>Ideias</button><button type="button" data-sec="agenda" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="12" cy="15" r="1.2"/></svg>Agenda</button><button type="button" data-sec="metricas" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Métricas</button><button type="button" id="navMenu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</button></nav>
 <div class="overlay" id="overlayMore" role="dialog" aria-modal="true" aria-labelledby="moreTitle">
   <div class="sheet"><h2 id="moreTitle">Menu</h2>
     <div class="more-list" id="moreList">
       <button type="button" data-sec="dificuldade">Vídeos por nível de dificuldade</button>
       <button type="button" data-sec="ganchos">Ganchos e Temas</button>
       <button type="button" data-sec="inspiracao">Datas especiais</button>
-      <button type="button" data-sec="materiais">Materiais de apoio</button>
       <button type="button" data-sec="perfil">Meu perfil e aparência</button>
     </div>
   </div>
@@ -1167,7 +1166,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
       '<div class="sum next"><b>'+(up?esc(KBYKEY[up.kind].label+": "+up.it.title):"Nada marcado")+'</b><span>'+(up?esc(whenText(up.at)):"Marque datas nos vídeos")+'</span></div>';
   }
   function renderNav(){
-    var extra=["dificuldade","ganchos","inspiracao","materiais","perfil"];
+    var extra=["dificuldade","ganchos","inspiracao","perfil"];
     document.querySelectorAll("#bnav [data-sec]").forEach(function(b){ b.setAttribute("aria-selected",String(b.dataset.sec===sec)); });
     $("#menuBtn").setAttribute("aria-selected",String(extra.indexOf(sec)>=0));
     var NAMES={videos:"Vídeos",ideias:"Ideias",agenda:"Agenda",metricas:"Métricas",dificuldade:"Por dificuldade",ganchos:"Ganchos e Temas",inspiracao:"Datas especiais",materiais:"Materiais de apoio",perfil:"Meu perfil"};
@@ -1182,7 +1181,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
   }
   function renderTabs(){
     var a=active(), html="";
-    html+='<button class="tab" role="tab" data-tab="todos" aria-selected="'+(tab==="todos"&&!q)+'">TODOS<span class="n">'+a.length+'</span></button>';
+    html+='<button class="tab" role="tab" data-tab="todos" aria-selected="'+(tab==="todos"&&!q)+'">GERAL<span class="n">'+a.filter(function(x){return x.status!=="publicado";}).length+'</span></button>';
     STATUS.forEach(function(s){
       var n=a.filter(function(x){return x.status===s.k;}).length;
       html+='<button class="tab" role="tab" data-tab="'+s.k+'" aria-selected="'+(tab===s.k&&!q)+'">'+s.tab+'<span class="n">'+n+'</span></button>';
@@ -1235,7 +1234,7 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
       var t=q.toLowerCase();
       list=active().filter(function(x){return (x.title+" "+x.theme+" "+x.hook+" "+x.script+" "+x.caption+" "+x.hashtags).toLowerCase().indexOf(t)>=0;});
       empty="Nada encontrado para essa busca.";
-    }else if(tab==="todos"){ list=active(); empty="Nenhum vídeo ainda. Toque no campo acima para criar um."; }
+    }else if(tab==="todos"){ list=active().filter(function(x){return x.status!=="publicado";}); empty="Nenhum vídeo ainda. Toque no campo acima para criar um."; }
     else{ if(!BYKEY[tab]) tab="ideia"; list=active().filter(function(x){return x.status===tab;}); empty=BYKEY[tab].empty; }
     if(themeF) list=list.filter(function(x){return x.theme===themeF;});
     list=sortedByDate(list);
@@ -1966,7 +1965,6 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
     h+='<div class="f"><label for="p_handle">Seu perfil no Instagram</label><input id="p_handle" value="'+esc(p.handle||"")+'" placeholder="@seuperfil" maxlength="60"></div>';
     h+=tx("p_niche","Nicho e assuntos do perfil",p.niche,3,"Sobre o que você fala e o que torna o seu perfil diferente")+tx("p_audience","Quem assiste",p.audience,2,"Idade, interesses, o que a pessoa quer resolver")+tx("p_tone","Tom de voz",p.tone,2,"Ex.: leve, direto, didático, com humor")+tx("p_pillars","Temas recorrentes",p.pillars,2,"Ex.: dicas de estudo, rotina, bastidores")+tx("p_editing","Meu estilo de edição",p.editing,2,"Ex.: cortes rápidos, legenda grande na tela, trilha, zoom, B-roll")+tx("p_routine","Sua rotina de gravação e postagem",p.routine,3,"Dias e horários em que costuma gravar, editar e postar; quantos vídeos por semana")+tx("p_avoid","O que evitar",p.avoid,2,"Assuntos, palavras ou promessas que você não quer usar")+tx("p_examples","Exemplos do seu estilo",p.examples,3,"Cole uma legenda ou frase que represente bem o seu jeito de falar");
     h+='<div class="row"><button class="btn primary" id="profSave" type="button">Salvar perfil</button></div></div>';
-    h+='<h2 class="sec">Checklist padrão</h2><div class="info">Um item por linha. Deixe em branco para usar a lista padrão.</div><div class="inl">'+tx("p_chk_rec","Antes de gravar",(p.chk&&p.chk.rec)||"",4,L.rec.join("\n"))+tx("p_chk_edit","Na edição",(p.chk&&p.chk.edit)||"",4,L.edit.join("\n"))+tx("p_chk_pub","Antes de postar",(p.chk&&p.chk.pub)||"",4,L.pub.join("\n"))+'<div class="row"><button class="btn primary" id="chkSave" type="button">Salvar checklist</button></div></div>';
     h+='<h2 class="sec">Datas especiais</h2><label class="check"><input type="checkbox" id="p_health"'+(p.showHealth===false?"":" checked")+'><span>Mostrar datas e campanhas de saúde em Datas especiais</span></label>';
     h+='<form class="inl" id="dateAdd"><div class="two"><div class="f"><label for="dt_date">Data (repete todo ano)</label><input id="dt_date" type="date" required></div><div class="f"><label for="dt_name">Nome</label><input id="dt_name" required maxlength="80" placeholder="Ex.: aniversário do perfil"></div></div><div class="row"><button class="btn small" type="submit">Adicionar data</button></div></form>';
     var ds=(p.dates||[]);
@@ -2071,7 +2069,6 @@ ul.mats{margin:0;padding-left:18px;font-size:.88rem}
  if(T.closest("#ghNow")){ ghRun(true); return; }
  if(T.closest("#ghOff")){ try{ localStorage.removeItem("me_gh_token"); localStorage.removeItem("me_gist_id"); }catch(e){} toast("Nuvem desativada neste aparelho."); render(); return; }
     if(T.closest("#profSave")){ readProfileFields(); await saveProfile(); toast("Perfil salvo."); return; }
-    if(T.closest("#chkSave")){ profile.chk={rec:$("#p_chk_rec").value.trim(),edit:$("#p_chk_edit").value.trim(),pub:$("#p_chk_pub").value.trim()}; await saveProfile(); toast("Checklist salvo."); render(); return; }
     var dl=T.closest("[data-datedel]"); if(dl){ readProfileFields(); profile.dates=(profile.dates||[]).filter(function(_,i){return i!==Number(dl.dataset.datedel);}); await saveProfile(); render(); return; }
     /* cartões de vídeo */
     var a=T.closest("[data-act]"); if(a){
