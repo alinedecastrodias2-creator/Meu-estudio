@@ -291,6 +291,10 @@ details summary{-webkit-tap-highlight-color:transparent}
 .card.picked .dchk{background:var(--accent);border-color:var(--accent)}
 .card.picked .dchk::after{content:"";position:absolute;left:6px;top:1px;width:6px;height:12px;border:solid var(--accent-ink);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
 .notice{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:.85rem;margin:12px 0}
+.gen{border:1.5px dashed var(--line);border-radius:14px;padding:10px 12px;margin:2px 0 12px;background:var(--card)}
+.gen textarea{width:100%;margin:4px 0 8px}
+.gen .btn[hidden]{display:none}
+.gen .hint{margin-top:8px}
 .dup{margin-top:8px;border:2px solid #c62828;background:#fdecea;color:#5a1210;border-radius:10px;padding:10px 12px;font-size:.88rem}
 .dup[hidden]{display:none}
 .dup b{color:#a3201d}.dup ul{margin:6px 0;padding-left:0;list-style:none}.dup li{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 0;border-top:1px solid #f1c4c0}.dup li:first-child{border-top:0}
@@ -414,6 +418,12 @@ h1{font-weight:800}
     <div class="field"><label for="f_hook">Gancho (primeiros 3 segundos)</label><input id="f_hook" maxlength="200">
       <div class="row"><button class="btn small btn-blue" type="button" id="f_savehook">Guardar este gancho no banco</button><button class="btn small btn-green" type="button" id="f_valid">Ganchos validados</button></div></div>
     <div class="field"><label for="f_script">Descrição e roteiro</label>
+      <div class="gen" id="genBox">
+        <label for="f_ctx" class="mini">Contexto do vídeo</label>
+        <textarea id="f_ctx" rows="3" maxlength="1500" placeholder="Como você quer que esse vídeo seja? Ex.: tom leve, mostrar a rotina de plantão, uns 40 segundos, terminar pedindo para salvar"></textarea>
+        <div class="row"><button class="btn small primary" type="button" id="f_gen">Gerar roteiro</button><button class="btn small" type="button" id="f_regen" hidden>Trocar roteiro</button><button class="btn small ghost" type="button" id="f_undo" hidden>Voltar ao anterior</button></div>
+        <div class="hint" id="f_genWhy" hidden></div>
+      </div>
       <div class="row"><select id="f_tpl" aria-label="Modelo de roteiro" style="flex:1;min-width:0;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--card)"></select><button class="btn small" type="button" id="f_tplgo">Inserir modelo</button></div>
       <textarea id="f_script" rows="8" placeholder="Escreva a fala completa ou só os tópicos.&#10;Exemplo:&#10;1. Abertura: a pergunta ou frase que prende&#10;2. Explicação: 2 a 3 pontos, um de cada vez&#10;3. Fechamento: resumo e o que a pessoa faz agora (salvar, comentar)"></textarea></div>
 
@@ -717,7 +727,7 @@ h1{font-weight:800}
   function normalize(o){
     var it=Object.assign({},o);
     it.title=it.title||"Sem título"; it.format=(!it.format||it.format==="Reels")?"Reels dinâmico":it.format; it.status=BYKEY[it.status]?it.status:"ideia";
-    ["theme","hook","script","caption","hashtags","recordAt","editAt","publishAt","igUrl","batchId","batchEv","derivedFrom","recLevel","editLevel"].forEach(function(f){ if(typeof it[f]!=="string") it[f]=""; });
+    ["theme","hook","script","caption","hashtags","recordAt","editAt","publishAt","igUrl","batchId","batchEv","derivedFrom","recLevel","editLevel","ctx"].forEach(function(f){ if(typeof it[f]!=="string") it[f]=""; });
     it.duration=it.duration||60; it.editDuration=it.editDuration||90; it.sync=it.sync!==false;
     var ev=it.ev||{}; it.ev={rec:ev.rec||it.eventId||"",edit:ev.edit||"",pub:ev.pub||""};
     it.metrics=it.metrics||{}; it.chk=Array.isArray(it.chk)?it.chk:[]; it.win=!!it.win; it.archived=false; it.snooze=0; it.trashed=Number(it.trashed)||0;
@@ -1166,7 +1176,7 @@ h1{font-weight:800}
     editingId=id; var it=items[id]||(draftItem&&draftItem.id===id?draftItem:null); if(!it) return;
     fillThemeList();
     $("#f_title").value=it.title; $("#f_format").value=it.format; $("#f_status").value=it.status; showDup();
-    $("#f_theme").value=it.theme; $("#f_hook").value=it.hook; if(typeof syncHookBtn==="function") syncHookBtn(); $("#f_script").value=it.script; $("#f_script").dataset.had=(it.script||"").trim()?"1":""; $("#f_tpl").selectedIndex=0;
+    $("#f_theme").value=it.theme; $("#f_hook").value=it.hook; if(typeof syncHookBtn==="function") syncHookBtn(); $("#f_script").value=it.script; $("#f_ctx").value=it.ctx||""; genReset(); $("#f_script").dataset.had=(it.script||"").trim()?"1":""; $("#f_tpl").selectedIndex=0;
     $("#f_rec").value=it.recordAt; $("#f_recdur").value=it.duration; $("#f_edit").value=it.editAt; $("#f_editdur").value=it.editDuration; $("#f_pub").value=it.publishAt;
     $("#f_sync").checked=it.sync; $("#batchNote").style.display=it.batchId?"block":"none";
     $("#f_caption").value=it.caption; $("#f_tags").value=it.hashtags; updateCounters();
@@ -2243,6 +2253,58 @@ h1{font-weight:800}
     if(!suggestion) return;
     $("#f_caption").value=suggestion.caption; $("#f_tags").value=suggestion.hashtags; updateCounters(); toast("Sugestão aplicada. Revise e salve.");
   });
+
+  /* ---------- gerar roteiro ---------- */
+  var genBusy=false, genLast="", genBackup=null;
+  function genReset(){ genLast=""; genBackup=null; var r=$("#f_regen"),u=$("#f_undo"),w=$("#f_genWhy"); if(r) r.hidden=true; if(u) u.hidden=true; if(w){ w.hidden=true; w.textContent=""; } }
+  function genSources(){
+    var o=[], vh=validHooks().slice(0,10);
+    if(vh.length) o.push("GANCHOS JÁ VALIDADOS DELA (use o padrão, não copie):\n"+vh.map(function(h){return "- "+h.text;}).join("\n"));
+    var ws=active().filter(function(x){return x.id!==editingId&&x.win&&(x.script||"").trim();}).slice(0,3);
+    if(ws.length) o.push("ROTEIROS DELA QUE DERAM CERTO (copie a estrutura e o jeito de falar):\n"+ws.map(function(x){return '"'+x.title+'":\n'+x.script.slice(0,900);}).join("\n---\n"));
+    var d=igDeepText(); if(d) o.push(d);
+    return o.join("\n\n");
+  }
+  function genLocal(){
+    var L=igPosts().filter(function(x){return views(x)>0&&x.format==="Reels";}).sort(function(a,b){return views(b)-views(a);});
+    var th=$("#f_theme").value.trim().toLowerCase(), pick=L.filter(function(x){return th&&String(x.th||"").toLowerCase()===th;})[0]||L[0];
+    var ctx=$("#f_ctx").value.trim(), hk=$("#f_hook").value.trim();
+    if(!pick) return {script:(ctx?"Contexto: "+ctx+"\n\n":"")+"Gancho (3 primeiros segundos): "+(hk||"…")+"\nDesenvolvimento:\n1. …\n2. …\nFechamento: peça para salvar e compartilhar.",why:"Ainda não há posts seus com dados para basear o roteiro."};
+    var sc=localScript(pick);
+    if(hk) sc=sc.replace(/^Gancho \(3 primeiros segundos\): .*/m,"Gancho (3 primeiros segundos): "+hk);
+    return {script:(ctx?"Contexto: "+ctx+"\n\n":"")+sc,why:"Sem o Claude aqui, montei um esqueleto a partir do seu post que mais rendeu. Para um roteiro completo, abra o Meu Estúdio pela página do Claude."};
+  }
+  async function genScript(swap){
+    if(genBusy) return;
+    var title=$("#f_title").value.trim(), ctx=$("#f_ctx").value.trim(), cur=$("#f_script").value;
+    if(!title&&!ctx){ toast("Escreva o título ou o contexto do vídeo primeiro."); $("#f_ctx").focus(); return; }
+    genBusy=true; var gb=$("#f_gen"), rb=$("#f_regen"); gb.disabled=true; rb.disabled=true; var gt=gb.textContent; (swap?rb:gb).textContent="Escrevendo…";
+    var out=null;
+    try{
+      if(sampleFn){
+        var prompt="Você escreve roteiros de Reels de Instagram em português do Brasil para a criadora descrita abaixo. O roteiro precisa seguir o que já foi validado no perfil dela, não tendências genéricas.\n\nSOBRE A CRIADORA E O QUE DEU CERTO:\n"+contextText()+"\n\n"+genSources()+
+          "\n\nSOBRE ESTE VÍDEO:\nTítulo: "+title+"\nFormato: "+$("#f_format").value+"\nTema: "+$("#f_theme").value+"\nGancho que ela já pensou: "+($("#f_hook").value||"(nenhum)")+"\nContexto que ela deu: "+(ctx||"(nenhum, use o título e o que deu certo)")+
+          (cur.trim()&&!swap?"\nRascunho atual (melhore e reescreva seguindo o contexto):\n"+cur.slice(0,3000):"")+
+          (swap&&genLast?"\n\nESTA VERSÃO NÃO AGRADOU, escreva uma claramente DIFERENTE (outro gancho e outra estrutura), mantendo o contexto e os padrões validados:\n"+genLast.slice(0,3000):"")+
+          "\n\nTAREFA: escreva o roteiro falado completo. Estrutura: Gancho (3 primeiros segundos, no padrão dos que mais renderam), Desenvolvimento em blocos curtos com tempo aproximado, Fechamento com chamada para ação (salvar, compartilhar ou comentar). Indique entre colchetes o que aparece na tela quando ajudar. Use o tom de voz dela e o formato do vídeo. Informação educativa, sem promessa de resultado e sem orientação médica individual. Responda só com JSON: {\"script\": string, \"why\": string} onde why tem no máximo 2 frases dizendo quais padrões validados você aplicou.";
+        var r=await sampleFn.json(prompt,{cache:false});
+        if(!r||!String(r.script||"").trim()) throw {code:"invalid_json"};
+        out={script:String(r.script).trim(),why:String(r.why||"").trim()};
+      } else out=genLocal();
+      genBackup=cur; genLast=out.script;
+      $("#f_script").value=out.script; $("#f_script").dispatchEvent(new Event("input",{bubbles:true}));
+      var w=$("#f_genWhy"); w.textContent=out.why; w.hidden=!out.why;
+      $("#f_regen").hidden=false; $("#f_undo").hidden=!(cur||"").trim();
+      toast("Roteiro pronto. Você pode editar, trocar ou voltar ao anterior.");
+    }catch(err){ var m=sampleErr(err); if(m) toast(m); }
+    genBusy=false; gb.disabled=false; rb.disabled=false; gb.textContent=gt; rb.textContent="Trocar roteiro";
+  }
+  $("#f_gen").addEventListener("click",function(){ genScript(false); });
+  $("#f_regen").addEventListener("click",function(){ genScript(true); });
+  $("#f_undo").addEventListener("click",function(){
+    if(genBackup===null) return;
+    $("#f_script").value=genBackup; $("#f_script").dispatchEvent(new Event("input",{bubbles:true})); genBackup=null; $("#f_undo").hidden=true; $("#f_genWhy").hidden=true; toast("Voltei ao roteiro anterior.");
+  });
   $("#f_cancel").addEventListener("click",closeEditor);
   $("#overlay").addEventListener("click",function(e){ if(e.target===$("#overlay")) closeEditor(); });
   $("#f_del").addEventListener("click",async function(){
@@ -2265,7 +2327,7 @@ h1{font-weight:800}
     if(miss.length){ toast("Falta preencher: "+miss.map(function(m){return m[1];}).join(", ")+"."); $(miss[0][0]).focus(); return; }
     var it=normalize(old);
     it.title=$("#f_title").value.trim(); it.format=$("#f_format").value; it.theme=$("#f_theme").value.trim();
-    it.recLevel=getLevel("recLevel"); it.editLevel=getLevel("editLevel"); it.hook=$("#f_hook").value.trim(); it.script=$("#f_script").value.trim(); it.status=$("#f_status").value;
+    it.recLevel=getLevel("recLevel"); it.editLevel=getLevel("editLevel"); it.hook=$("#f_hook").value.trim(); it.script=$("#f_script").value.trim(); it.ctx=$("#f_ctx").value.trim(); it.status=$("#f_status").value;
     if(it.script&&!old.script&&it.status==="ideia") it.status="pendente";
     it.recordAt=$("#f_rec").value||""; it.editAt=$("#f_edit").value||""; it.publishAt=$("#f_pub").value||"";
     it.duration=num($("#f_recdur").value)||60; it.editDuration=num($("#f_editdur").value)||90; it.sync=$("#f_sync").checked;
