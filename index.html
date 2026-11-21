@@ -2265,18 +2265,10 @@ h1{font-weight:800}
     var d=igDeepText(); if(d) o.push(d);
     return o.join("\n\n");
   }
-  function genLocal(){
-    var L=igPosts().filter(function(x){return views(x)>0&&x.format==="Reels";}).sort(function(a,b){return views(b)-views(a);});
-    var th=$("#f_theme").value.trim().toLowerCase(), pick=L.filter(function(x){return th&&String(x.th||"").toLowerCase()===th;})[0]||L[0];
-    var ctx=$("#f_ctx").value.trim(), hk=$("#f_hook").value.trim();
-    if(!pick) return {script:(ctx?"Contexto: "+ctx+"\n\n":"")+"Gancho (3 primeiros segundos): "+(hk||"…")+"\nDesenvolvimento:\n1. …\n2. …\nFechamento: peça para salvar e compartilhar.",why:"Ainda não há posts seus com dados para basear o roteiro."};
-    var sc=localScript(pick);
-    if(hk) sc=sc.replace(/^Gancho \(3 primeiros segundos\): .*/m,"Gancho (3 primeiros segundos): "+hk);
-    return {script:(ctx?"Contexto: "+ctx+"\n\n":"")+sc,why:"Sem o Claude aqui, montei um esqueleto a partir do seu post que mais rendeu. Para um roteiro completo, abra o Meu Estúdio pela página do Claude."};
-  }
   async function genScript(swap){
     if(genBusy) return;
     var title=$("#f_title").value.trim(), ctx=$("#f_ctx").value.trim(), cur=$("#f_script").value;
+    if(!sampleFn){ var wn=$("#f_genWhy"); wn.textContent="O Claude só escreve roteiros quando o Meu Estúdio é aberto pela página do Claude (claude.ai). Aqui no app não dá. Seu contexto fica salvo: gere o roteiro na página do Claude e ele aparece aqui depois da sincronização."; wn.hidden=false; return; }
     if(!title&&!ctx){ toast("Escreva o título ou o contexto do vídeo primeiro."); $("#f_ctx").focus(); return; }
     genBusy=true; var gb=$("#f_gen"), rb=$("#f_regen"); gb.disabled=true; rb.disabled=true; var gt=gb.textContent; (swap?rb:gb).textContent="Escrevendo…";
     var out=null;
@@ -2286,11 +2278,11 @@ h1{font-weight:800}
           "\n\nSOBRE ESTE VÍDEO:\nTítulo: "+title+"\nFormato: "+$("#f_format").value+"\nTema: "+$("#f_theme").value+"\nGancho que ela já pensou: "+($("#f_hook").value||"(nenhum)")+"\nContexto que ela deu: "+(ctx||"(nenhum, use o título e o que deu certo)")+
           (cur.trim()&&!swap?"\nRascunho atual (melhore e reescreva seguindo o contexto):\n"+cur.slice(0,3000):"")+
           (swap&&genLast?"\n\nESTA VERSÃO NÃO AGRADOU, escreva uma claramente DIFERENTE (outro gancho e outra estrutura), mantendo o contexto e os padrões validados:\n"+genLast.slice(0,3000):"")+
-          "\n\nTAREFA: escreva o roteiro falado completo. Estrutura: Gancho (3 primeiros segundos, no padrão dos que mais renderam), Desenvolvimento em blocos curtos com tempo aproximado, Fechamento com chamada para ação (salvar, compartilhar ou comentar). Indique entre colchetes o que aparece na tela quando ajudar. Use o tom de voz dela e o formato do vídeo. Informação educativa, sem promessa de resultado e sem orientação médica individual. Responda só com JSON: {\"script\": string, \"why\": string} onde why tem no máximo 2 frases dizendo quais padrões validados você aplicou.";
+          "\n\nTAREFA: escreva o roteiro falado completo. Estrutura: Gancho (3 primeiros segundos, no padrão dos que mais renderam), Desenvolvimento em blocos curtos com tempo aproximado, Fechamento com chamada para ação (salvar, compartilhar ou comentar). Indique entre colchetes o que aparece na tela quando ajudar. Use o tom de voz dela e o formato do vídeo. Informação educativa, sem promessa de resultado e sem orientação médica individual. Crie um roteiro ORIGINAL para este vídeo a partir do contexto dela. Não copie nem cole o roteiro de nenhum post existente, e não repita o texto do contexto dentro do roteiro: o roteiro contém só o que ela vai falar e mostrar. Responda só com JSON: {\"script\": string, \"why\": string} onde why tem no máximo 2 frases dizendo quais padrões validados você aplicou.";
         var r=await sampleFn.json(prompt,{cache:false});
         if(!r||!String(r.script||"").trim()) throw {code:"invalid_json"};
         out={script:String(r.script).trim(),why:String(r.why||"").trim()};
-      } else out=genLocal();
+      } else return;
       genBackup=cur; genLast=out.script;
       $("#f_script").value=out.script; $("#f_script").dispatchEvent(new Event("input",{bubbles:true}));
       var w=$("#f_genWhy"); w.textContent=out.why; w.hidden=!out.why;
